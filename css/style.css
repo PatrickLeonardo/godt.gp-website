@@ -1,0 +1,33 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(136, 136, 157);
+}
+
+header{
+    background-color: rgb(99, 27, 27);
+    color: rgb(215, 217, 220);
+    padding: 0px 10px 10px 10px;
+    font-family: monospace;
+    font-size: 2em;
+}
+
+#icon{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding: 15px 15px 0px 0px;
+}
+
+h1{
+    text-align: center;
+    text-shadow: 5px 4px 4px black;
+    margin-top: 0px;
+}
+
+#bar{
+    background-color: rgb(158, 158, 158);
+    padding: 250px;
+    margin: 45px;
+    border-radius: 10px;
+}
