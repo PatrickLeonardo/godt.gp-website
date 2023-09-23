@@ -12,18 +12,22 @@
 
         <h1>Crie sua nova conta na GODT</h1>
 
-        <form action="">
+        <form id="form">
     
             Username: 
-            <input type="text" id="" placeholder="Digite seu nome"><br><br>
+            <input type="text" id="user" placeholder="Digite seu nome">
+            
+            <br><br>
     
             Login:
-            <input type="text" id="" placeholder="Digite seu login"><br><br>
+            <input type="text" id="login" placeholder="Digite seu login">
+            
+            <br><br>
     
             Password:
-            <input type="password" id="" placeholder="Digite sua senha"><br>
+            <input type="password" id="password" placeholder="Digite sua senha">
             
-            <br><br><br>
+            <br><br><br><br>
     
             <input type="submit" id="buttons" value="Criar Conta"><br><br>
             
@@ -34,6 +38,50 @@
     
 
     </div>
+
+    <script type="text/javascript" src="../src/jquery.js"></script>
+    <script type="text/javascript">
+
+        (async function () {
+
+            $.ajaxSetup({
+                async: true
+            })
+
+            $.ajax({
+                method: "GET",
+                url: "http://localhost:8080/",
+                success: (data) => {
+                    console.log(typeof(data), data)
+                },
+                error: (err) => {
+                    $('body').append(err)
+                }
+            }).done((message) => {
+                console.log("ajax is done")
+            })
+
+            await $('#form').submit( function(event) {
+                const update = {
+                    "user": $("#user").val(),
+                    "login": $("#login").val(),
+                    "password": $("#password").val()
+                }
+                $.ajax({
+                    url: "http://localhost:8080/new_account",
+                    headers:{ 'Content-Type': 'application/json' }, 
+                    method: 'POST',
+                    data: JSON.stringify(update),
+                    success: alert('Conta criada com sucesso!')
+                });
+
+                event.preventDefault();
+                
+            });
+
+        }());
+
+    </script>
 
 </body>
 </html>
