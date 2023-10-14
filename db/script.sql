@@ -14,5 +14,7 @@ CREATE TABLE IF NOT EXISTS products (
     image_url TEXT NOT NULL
 );
 
-INSERT OR IGNORE INTO products (name, price, image_url) VALUES ('Godt Vamp', 'R$99,00', 'https://imagizer.imageshack.com/img924/1020/wZzmXO.png');
+INSERT INTO products (name, price, image_url) SELECT 'Godt Vamp (Black)', 'R$99,00', 'https://imagizer.imageshack.com/img922/921/VX0Qk2.jpg' WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Godt Vamp (Black)' AND price = 'R$99,00' AND image_url = 'https://imagizer.imageshack.com/img922/921/VX0Qk2.jpg');
+
+INSERT INTO products (name, price, image_url) SELECT 'Godt Vamp (White)', 'R$99,00', 'https://imagizer.imageshack.com/img923/8661/s0nSdb.jpg' WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Godt Vamp (White)' AND price = 'R$99,00' AND image_url = 'https://imagizer.imageshack.com/img923/8661/s0nSdb.jpg');
 
