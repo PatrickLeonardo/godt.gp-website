@@ -50,7 +50,7 @@
 
             $.ajax({
                 method: "GET",
-                url: "http://localhost:8080/",
+                url: "http://localhost:3000/",
                 success: (data) => {
                     console.log(typeof(data), data)
                 },
@@ -68,7 +68,7 @@
                     "password": $("#password").val()
                 }
                 $.ajax({
-                    url: "http://localhost:8080/new_account",
+                    url: "http://localhost:3000/new_account",
                     headers:{ 'Content-Type': 'application/json' }, 
                     method: 'POST',
                     data: JSON.stringify(update),

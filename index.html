@@ -17,8 +17,30 @@
     </header>
 
     <div id="bar">
-        <p></p>
-    </div>
+        
+            <div id="products"></div>
+
+        </div>
+
+    <script>
+        
+        fetch('http://localhost:3000/get_products')
+            .then(response => response.json())
+            .then(data => {
+
+                data.forEach(produto => {
+
+                    const products = document.getElementById('products');
+                    const row = document.createElement('div');
+                    row.innerHTML = `<span><img src='${produto.image_url}'></span><br><br><span>${produto.name}</span><br><span>${produto.price}</span>`;
+                    products.appendChild(row)
+                })
+
+        }).catch(error => {
+            console.error('Erro ao obter produtos: ', error);        
+        });
+
+    </script>
 
 </body>
 </html>

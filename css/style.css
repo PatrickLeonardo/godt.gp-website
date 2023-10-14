@@ -27,7 +27,14 @@ h1{
 
 #bar{
     background-color: rgb(158, 158, 158);
-    padding: 250px;
+    padding: 100px 100px 300px 200px;
     margin: 45px;
     border-radius: 10px;
+    width: 1200px;
+    height: 100px;
 }
+#products img{
+    width: 400px;
+    height: 250px;
+}
+

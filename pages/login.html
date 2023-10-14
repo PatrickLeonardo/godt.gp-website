@@ -15,17 +15,17 @@
         <form id="form">
 
             Username: 
-            <input type="text" id="user" placeholder="Digite seu nome"><br><br>
+            <input type="text" name="user" id="user" placeholder="Digite seu nome"><br><br>
 
             Login:
-            <input type="text" id="login" placeholder="Digite seu login"><br><br>
+            <input type="text" name="login" id="login" placeholder="Digite seu login"><br><br>
 
             Password:
-            <input type="password" id="password" placeholder="Digite sua senha" ><br><br>
+            <input type="password" name="password" id="password" placeholder="Digite sua senha" ><br><br>
             
             <br><br>
 
-            <input type="submit" id="buttons" value="Entrar">
+            <input id="buttons" value="Entrar" onclick="enviarFormulario()">
 
             <br><br>
 
@@ -42,44 +42,35 @@
     <script type="text/javascript" src="../src/jquery.js"></script>
     <script type="text/javascript">
 
-        (async function () {
+        function enviarFormulario() {
+            
+            const form = document.getElementById('form');
+            const user = form.user.value;
+            const login = form.login.value;
+            const password = form.password.value;
 
-            $.ajaxSetup({
-                async: true
-            })
+            const data = {
+                user: user,
+                login: login,
+                password: password
+            };
 
-            $.ajax({
-                method: "GET",
-                url: "http://localhost:8080/",
-                success: (data) => {
-                    console.log(typeof(data), data)
-                },
-                error: (err) => {
-                    $('body').append(err)
+            const jsonData = JSON.stringify(data);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+            xhr.send(jsonData);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    window.location.href = '../index.html';
+                } else {
+                    alert('Login ou Senha inválidos');
                 }
-            }).done((message) => {
-                console.log("ajax is done")
-            })
-
-            await $('#form').submit( function(event) {
-                const update = {
-                    "user": $("#user").val(),
-                    "login": $("#login").val(),
-                    "password": $("#password").val()
-                }
-                $.ajax({
-                    url: "http://localhost:8080/login",
-                    headers:{ 'Content-Type': 'application/json' }, 
-                    method: 'POST',
-                    data: JSON.stringify(update),
-                    success: console.log("ok")
-                });
-
-                event.preventDefault();
-                
-            });
-
-        }());
+            };
+        }
 
     </script>
 

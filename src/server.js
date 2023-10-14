@@ -1,70 +1,104 @@
 const cors = require('cors');
+const fs = require('fs');
 const express = require('express');
-const mysql = require('mysql2')
+const sqlite3 = require('sqlite3').verbose();
 const app = express();
-const port = 8080;
+const port = 3000;
 
 require('dotenv').config()
 app.use(express.json(), cors());
 
-const connection = mysql.createConnection(process.env.DATABASE_URL)
-console.log('\n[+] Connected to PlanetScale')
+let db = new sqlite3.Database('../db/database.db', (err) => {
+    if (err) {
+        return console.error(err.message);
+    }
+    console.log('[+] Connected to the SQlite database.\n');
+});
 
-connection.query('SELECT * FROM users;', (err, results) => {
-    if (err) console.log(err);
-    console.log(results);
-})
+const sqlScript = fs.readFileSync('../db/script.sql', 'utf8');
+const sqlCommands = sqlScript.split(';');
 
-const data = [];
-var index = 0;
+sqlCommands.forEach((sqlCommand) => {
+    
+    if (sqlCommand.trim() !== '') {
+        db.run(sqlCommand, (err) => {
+            if (err) console.error(err.message);
+        });
+    }
+
+});
 
 app.get('/', (req, res) => {
-    return "<h1>Server</h1>"
+    res.send("<h1>Server</h1>")
 })
+
+app.get('/get_products', (req, res) => {
+
+    const query = `SELECT * FROM products;`;
+
+    db.all(query, (err, rows) => {
+
+        if(err) {
+            console.log(err);
+            return res.status(500).send('Erro interno no servidor.');
+        }
+
+        res.json(rows);
+    });
+});
 
 app.post('/login', (req, res) => {
+    
+    const query = `SELECT * FROM users WHERE username = ? AND login = ? AND password = ?`;
+    const params = [req.body.user, req.body.login, req.body.password];
+    console.log(params)
 
-    const query = 'SELECT * FROM users WHERE user = "' + req.body.user +  '" && login = "' + req.body.login + '" && password = "' + req.body.password + '";'
-
-    connection.query(query, (err, results) =>{
-        
+    db.all(query, params, (err, rows) => {
         if (err) {
-
-            console.log(err);
-            alert('Login ou senha incorretos.');
-            
-        } else {
-            console.log(results)
-            return res.redirect('http://127.0.0.1:5500/index.html');
+            console.error(err);
+            return res.status(500).send('Erro interno no servidor.');
         }
-    
+
+        if (rows.length > 0) {
+            console.log('ok')
+            res.status(200).send('Solicitação bem sucedida!');
+        } else {
+            return res.status(401).send('Login ou senha incorretos.');
+        }
+
     });
-    
-})
+});
 
 app.post('/new_account', (req, res) => {
-    data.push(req.body)
-    
-    console.log(req.body);
- 
-    const query = 'INSERT INTO users (user, login, password) VALUES ("' + data[index].user + '", "' + data[index].login + '", "' + data[index].password + '"' + ');'
+   
+    const { user, login, password } = req.body;
+    console.log(user, login, password)
 
-    connection.query(query, (err, results) => {
-        if (err) console.log(err);
-        console.log(results);
-    })
+    const query = `INSERT INTO users (username, login, password) VALUES (?, ?, ?)`;
+    const params = [user, login, password];
 
-    connection.query('SELECT * FROM users;', (err, results) => {
-        if (err) console.log(err);
-        console.log(results);
-    })
+    db.run(query, params, function (err) {
+        
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erro interno no servidor.');
+        }
 
-    index ++;
+        const selectQuery = 'SELECT * FROM users';
+        db.all(selectQuery, (err, rows) => {
+            
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erro interno no servidor.');
+            }
 
-    return res.json(data)
-    
+            return res.json(rows);
+        });
+    });
+
 });
 
 app.listen(port, () => {
-    console.log("[+] Server running on port: " + port + "\n")
+    console.log("\n[+] Server running on port: " + port)
 });
+
