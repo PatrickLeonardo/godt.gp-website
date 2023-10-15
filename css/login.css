@@ -53,3 +53,16 @@ button, #buttons{
 #new_account_btn{
     padding: 10px 70px 10px 70px;
 }
+
+@media (max-width: 768px) {
+    
+    #box{
+        margin-top: 70px;
+        margin-left: 5%;
+        margin-right: 5%;
+        padding-left: 5%;
+        padding-right: 5%;
+        font-size: 0.8em;
+    }
+
+}
