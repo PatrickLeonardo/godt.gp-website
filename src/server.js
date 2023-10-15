@@ -3,7 +3,7 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-const port = 80;
+const port = 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -18,10 +18,10 @@ app.use((req, res, next) => {
 const db = new sqlite3.Database(':memory:', (err) => {
 
     if (err) {
-        console.error('[!] Error connecting to the SQLite database:', err.message);
+        console.error('\n[!] Error connecting to the SQLite database:', err.message);
     } else {
 
-        console.log('[+] Connected to the SQLite database.\n');
+        console.log('\n[+] Connected to the SQLite database.');
         initializeDatabase()
             .then(() => {
                 startServer();
@@ -109,10 +109,9 @@ function startServer() {
     });
 
     app.post('/login', (req, res) => {
-		console.log('chegou')
+
         const query = `SELECT * FROM users WHERE username = ? AND login = ? AND password = ?`;
         const params = [req.body.user, req.body.login, req.body.password];
-        console.log(params)
 
         db.all(query, params, (err, rows) => {
 

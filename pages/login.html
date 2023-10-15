@@ -24,7 +24,7 @@
             
             <br><br><br><br>
             
-            <button id="buttons" onclick="enviarFormulario()">Entrar</button>
+            <button id="buttons" type="submit">Entrar</button>
             
             <br><br>
             
@@ -33,44 +33,40 @@
         </form>
         
     </div>
-
+	
+    <script type="text/javascript" src="./jquery.js"></script>
     <script type="text/javascript">
-    
-        async function enviarFormulario() {
-        
-            const form = document.getElementById('form');
-            const user = form.user.value;
-            const login = form.login.value;
-            const password = form.password.value;
+  
+		(async function () {
+			$.ajaxSetup({
+				async: true
+			});
+			await $('#form').submit(function (event) {
+				const update = {
+				    "user": $("#user").val(),
+				    "login": $("#login").val(),
+				    "password": $("#password").val()
+				};
+				$.ajax({
+				    url: "https://godt-gp-website-git-main-patrickleonardo.vercel.app/login",
+				    headers: { 'Content-Type': 'application/json' },
+				    method: 'POST',
+				    data: JSON.stringify(update),
+				    success: function (data, textStatus, jqXHR) {
+				        if (jqXHR.status === 200) {
+				            window.location.href = '../pages/new_product.html';
+				        }
+				    },
+				    error: function (jqXHR, textStatus, errorThrown) {
+    					if (jqXHR.status === 401) {
+    						alert("Campos incorreto!")	
+    					}
+ 					 }
+				});
+				event.preventDefault();
+			});
+		}());
 
-            const data = {
-                user: user,
-                login: login,
-                password: password
-            };
-
-            try {
-            
-                const response = await fetch('https://godt-gp-website-git-main-patrickleonardo.vercel.app/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.status === 200) {
-                    window.location.href = '../pages/new_product.html';
-                } else {
-                    alert('Login ou Senha inválidos');
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro na solicitação.');
-            }
-            
-        }
-        
     </script>
     
 </body>

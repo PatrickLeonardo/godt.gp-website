@@ -15,21 +15,21 @@
         <form id="form">
         
             Nome:
-            <input type="text" name="name" placeholder="Digite o nome do produto">
+            <input type="text" id="name" placeholder="Digite o nome do produto">
             
             <br><br>
             
             Preço:
-            <input type="text" name="price" placeholder="Digite o preço do produto">
+            <input type="text" id="price" placeholder="Digite o preço do produto">
             
             <br><br>
             
             URL da Imagem:
-            <input type="text" name="image_url" placeholder="Digite a URL da imagem do produto">
+            <input type="text" id="image_url" placeholder="Digite a URL da imagem do produto">
             
             <br><br><br><br>
             
-            <input id="buttons" value="Registrar" onclick="enviarFormulario()">
+            <button id="buttons" type="submit">Registrar</button>
             
             <br><br>
             
@@ -39,43 +39,39 @@
         
     </div>
     
+    <script type="text/javascript" src="./jquery.js"></script>
     <script type="text/javascript">
-    
-        async function enviarFormulario() {
-        
-            const form = document.getElementById('form');
-            const name = form.name.value;
-            const price = form.price.value;
-            const image_url = form.image_url.value;
+  
+		(async function () {
+			$.ajaxSetup({
+				async: true
+			});
+			await $('#form').submit(function (event) {
+				const update = {
+				    "name": $("#name").val(),
+				    "price": $("#price").val(),
+				    "image_url": $("#image_url").val()
+				};
+				$.ajax({
+				    url: "https://godt-gp-website-git-main-patrickleonardo.vercel.app/new_product",
+				    headers: { 'Content-Type': 'application/json' },
+				    method: 'POST',
+				    data: JSON.stringify(update),
+				    success: function (data, textStatus, jqXHR) {
+				        if (jqXHR.status === 200) {
+				            window.location.href = '../index.html';
+				        }
+				    },
+				    error: function (jqXHR, textStatus, errorThrown) {
+    					if (jqXHR.status === 500) {
+    						alert("Erro interno no servidor!")	
+    					}
+ 					 }
+				});
+				event.preventDefault();
+			});
+		}());
 
-            const data = {
-                name: name,
-                price: price,
-                image_url: image_url
-            };
-
-            try {
-            
-                const response = await fetch('https://godt-gp-website-git-main-patrickleonardo.vercel.app/new_product', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.status === 200) {
-                    window.location.href = '../index.html';
-                } else {
-                    alert('Nome, Preço ou URL da Imagem inválidos');
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro na solicitação.');
-            }
-            
-        }
-        
     </script>
     
 </body>
