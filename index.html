@@ -20,30 +20,30 @@
 
     <script>
         
-        fetch('http://localhost:3002/get_products')
-            .then(response => response.json())
-            .then(data => {
+        fetch('https://03d1-177-140-104-214.ngrok-free.app/get_products')
+            .then(response => response.json()
+                .then(data => {
                 
-                var row = 1;
-                data.forEach(produto => {
+                    var row = 1;
+                    data.forEach(produto => {
                     
-                    const products = document.getElementById('products');
-                    const product = document.createElement('div');
-                    product.id = 'product'
-                    product.style.display = 'grid';
-                    product.style.gridRowStart = row;
-                    product.style.gridRowEnd = row+1;
+                        const products = document.getElementById('products');
+                        const product = document.createElement('div');
+                        product.id = 'product'
+                        product.style.display = 'grid';
+                        product.style.gridRowStart = row;
+                        product.style.gridRowEnd = row+1;
 
-                    product.innerHTML = `<img src='${produto.image_url}'></span><br><br><span style="padding-top: 20px">${produto.name}</span><br><span>${produto.price}</span><span><button id="link"><a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fmessage%2F67XGGWRNE53IM1&e=AT1oD0x2rrBvMzrYQaRp332YKkgW9niB9pUG6-NX8NLP5o48N69usKMuMrjnFnDhKhUBmXT-RT972CoHup203jPgzirl3CRpCG7t9e8">Buy on WhatsApp</a></button>`;
-                    products.appendChild(product);
+                        product.innerHTML = `<img src='${produto.image_url}'></span><br><br><span style="padding-top: 20px">${produto.name}</span><br><span>${produto.price}</span><span><button id="link"><a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fmessage%2F67XGGWRNE53IM1&e=AT1oD0x2rrBvMzrYQaRp332YKkgW9niB9pUG6-NX8NLP5o48N69usKMuMrjnFnDhKhUBmXT-RT972CoHup203jPgzirl3CRpCG7t9e8">Buy on WhatsApp</a></button>`;
+                        products.appendChild(product);
 
-                    row ++;
+                        row ++;
 
-                });
+                    });
 
-        }).catch(error => {
-            console.error('Erro ao obter produtos: ', error);        
-        });
+                }).catch(error => {
+                    console.error('Erro ao obter produtos: ', error);        
+                }));
 
     </script>
 
