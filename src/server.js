@@ -3,10 +3,16 @@ const fs = require('fs');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
-const port = 3002;
+const port = 80;
 
-require('dotenv').config()
 app.use(express.json(), cors());
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Permite solicitações de qualquer origem
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
 let db = new sqlite3.Database('../db/database.db', (err) => {
     if (err) {
@@ -33,7 +39,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/get_products', (req, res) => {
-
+    
+    console.log('Chegouuu!')
     const query = `SELECT * FROM products;`;
 
     db.all(query, (err, rows) => {
@@ -42,7 +49,8 @@ app.get('/get_products', (req, res) => {
             console.log(err);
             return res.status(500).send('Erro interno no servidor.');
         }
-
+        
+        console.log(rows)
         res.json(rows);
     });
 });
