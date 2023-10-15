@@ -5,11 +5,12 @@ body{
 }
 
 header{
-    background-color: rgb(99, 27, 27);
+    background-color: black;
     color: rgb(215, 217, 220);
     padding: 0px 10px 10px 10px;
     font-family: monospace;
     font-size: 2em;
+    padding: 0px;
 }
 
 #icon{
@@ -23,6 +24,12 @@ h1{
     text-align: center;
     text-shadow: 5px 4px 4px black;
     margin-top: 0px;
+    padding: 0px;
+}
+
+h1 img {
+  width: 20%;
+  height: 20%;
 }
 
 #products{
@@ -65,6 +72,11 @@ h1{
 }
 
 @media (max-width: 768px) {
+  
+    h1 img{
+      width: 40%;
+      height: 40%;
+    }
 
     #products {
         padding: 20px;
