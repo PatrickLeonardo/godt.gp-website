@@ -47,7 +47,7 @@ h1{
     font-size: 1.6em;
     background-color: white;
     width: 300px;
-    height: 350px;
+    height: 450px;
     padding: 35px;
     border-radius: 15px;
     margin-top: 80px;
@@ -85,8 +85,13 @@ h1{
     }
 
     #product img{
-        width: 100%;
+        width: 80%;
         height: 90%;
+        padding: 15px 0px 0px 20px;
+    }
+
+    #link{
+        margin-left: 90px;
     }
 
 }

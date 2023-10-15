@@ -89,7 +89,6 @@ function executeSqlCommands(index, commands) {
 
 }
 
-
 function startServer() {
 
     app.get('/', (req, res) => {
@@ -110,42 +109,44 @@ function startServer() {
     });
 
     app.post('/login', (req, res) => {
-    
+		console.log('chegou')
         const query = `SELECT * FROM users WHERE username = ? AND login = ? AND password = ?`;
         const params = [req.body.user, req.body.login, req.body.password];
         console.log(params)
-        
-    	db.all(query, params, (err, rows) => {
-    	
+
+        db.all(query, params, (err, rows) => {
+
             if (err) {
                 console.error(err);
                 return res.status(500).send('Erro interno no servidor.');
             }
-            
+
             if (rows.length > 0) {
-            	res.status(200).send('Solicitação bem sucedida!');
+                res.status(200).send('Solicitação bem sucedida!');
             } else {
-            	return res.status(401).send('Login ou senha incorretos.');
+                return res.status(401).send('Login ou senha incorretos.');
             }
-            
+
         });
-        
+
     });
-    
+
     app.post('/new_product', (req, res) => {
-      const { name, price, image_url } = req.body;
+    
+        const { name, price, image_url } = req.body;
 
-      const query = 'INSERT INTO products (name, price, image_url) VALUES (?, ?, ?)';
-      const values = [name, price, image_url];
+        const query = 'INSERT INTO products (name, price, image_url) VALUES (?, ?, ?)';
+        const values = [name, price, image_url];
 
-      db.run(query, values, (err) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Erro interno no servidor.');
-        } else {
-          res.status(200).send('Registro bem sucedido.')
-      }
-      });
+        db.run(query, values, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erro interno no servidor.');
+            } else {
+                res.status(200).send('Registro bem sucedido.')
+            }
+        });
+
     });
 
     app.listen(port, () => {
