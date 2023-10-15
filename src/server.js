@@ -15,14 +15,14 @@ app.use((req, res, next) => {
     next();
 });
 
-let db = new sqlite3.Database('../db/database.db', (err) => {
+let db = new sqlite3.Database('db/database.db', (err) => {
     if (err) {
         return console.error(err.message);
     }
     console.log('[+] Connected to the SQlite database.\n');
 });
 
-const sqlScript = fs.readFileSync('../db/script.sql', 'utf8');
+const sqlScript = fs.readFileSync('db/script.sql', 'utf8');
 const sqlCommands = sqlScript.split(';');
 
 sqlCommands.forEach((sqlCommand) => {
