@@ -91,9 +91,10 @@ h1 img {
         padding: 20px;
         grid-column: 1 / 1;
         height: 420px;
-        margin-top: 100px;
+        margin-top: 30px;
         align-items: center;
         margin-left: 10%;
+        margin-bottom: 80px;
     }
 
     #product img{
