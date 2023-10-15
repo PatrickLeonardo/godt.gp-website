@@ -7,5 +7,67 @@
     <link rel="stylesheet" href="../css/new_account.css">
 </head>
 <body>
+
     
+    <div id="box">
+
+        <h1>Registre um novo produto</h1>
+
+        <form id="form">
+
+            Nome: 
+            <input type="text" name="name" placeholder="Digite o nome do produto"><br><br>
+
+            Preço:
+            <input type="text" name="price" placeholder="Digite o preço do produto"><br><br>
+
+            URL da Imagem
+            <input type="text" name="image_url" placeholder="Digite a url da imagem do produto" ><br><br>
+            
+            <br><br>
+
+            <input id="buttons" value="Registrar" onclick="enviarFormulario()">
+
+            <br><br>
+            
+            <button><a href="login.html">Voltar</a></button>
+            
+        </form>
+
+    </div>
+    
+	<script type="text/javascript">
+		async function enviarFormulario() {
+		    const form = document.getElementById('form');
+		    const name = form.name.value;
+		    const price = form.price.value;
+		    const image_url = form.image_url.value;
+
+		    const data = {
+		        name: name,
+		        price: price,
+		        image_url: image_url
+		    };
+
+		    try {
+		        const response = await fetch('https://godt-gp-website-1z98hphdu-patrickleonardo.vercel.app/new_product', {
+		            method: 'POST',
+		            headers: {
+		                'Content-Type': 'application/json;charset=UTF-8'
+		            },
+		            body: JSON.stringify(data)
+		        });
+
+		        if (response.status === 200) {
+		            window.location.href = '../index.html';
+		        } else {
+		            alert('Nome, Preço ou URL da Imagem inválidos');
+		        }
+		    } catch (error) {
+		        console.error('Erro:', error);
+		        alert('Ocorreu um erro na solicitação.');
+		    }
+		}
+	</script>
+
 </body>

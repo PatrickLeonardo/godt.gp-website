@@ -123,7 +123,6 @@ function startServer() {
             }
             
             if (rows.length > 0) {
-                console.log('ok')
             	res.status(200).send('Solicitação bem sucedida!');
             } else {
             	return res.status(401).send('Login ou senha incorretos.');
@@ -133,25 +132,24 @@ function startServer() {
         
     });
     
-	app.post('/new_product', (req, res) => {
-	   
-		const { name, price, image_url) } = req.body;
-	
-		const query = `INSERT INTO users (name, price, image_url) VALUES (?, ?, ?)`;
-		const params = [name, price, image_url];
-		
-		db.run(query, params, function (err) {
-		    
-		    if (err) {
-		        console.error(err);
-		        return res.status(500).send('Erro interno no servidor.');
-		    }
-		    
-		});
-	});
+    app.post('/new_product', (req, res) => {
+      const { name, price, image_url } = req.body;
+
+      const query = 'INSERT INTO products (name, price, image_url) VALUES (?, ?, ?)';
+      const values = [name, price, image_url];
+
+      db.run(query, values, (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erro interno no servidor.');
+        } else {
+          res.status(200).send('Registro bem sucedido.')
+      }
+      });
+    });
 
     app.listen(port, () => {
-        console.log(`[+] Server running on port: ${port}`);
+        console.log(`[+] Server running on port: ${port}\n`);
     });
 
 }
