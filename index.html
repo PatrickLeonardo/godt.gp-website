@@ -20,7 +20,7 @@
 
     <script>
         
-        fetch('https://godt-gp-website-patrickleonardo.vercel.app/get_products')
+        fetch('https://godt-gp-website-git-main-patrickleonardo.vercel.app/get_products')
             .then(response => response.json()
                 .then(data => {
                 
@@ -34,7 +34,7 @@
                         product.style.gridRowStart = row;
                         product.style.gridRowEnd = row+1;
 
-                        product.innerHTML = `<img src='${produto.image_url}'></span><br><br><span style="padding-top: 20px">${produto.name}</span><br><span>${produto.price}</span><span><button id="link"><a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fmessage%2F67XGGWRNE53IM1&e=AT1oD0x2rrBvMzrYQaRp332YKkgW9niB9pUG6-NX8NLP5o48N69usKMuMrjnFnDhKhUBmXT-RT972CoHup203jPgzirl3CRpCG7t9e8">Buy on WhatsApp</a></button>`;
+                        product.innerHTML = `<img src='${produto.image_url}'></span><br><br><span style="padding-top: 20px">${produto.name}</span><br><span>${produto.price}</span><span><button id="link"><a href="https://api.whatsapp.com/message/67XGGWRNE53IM1">Buy on WhatsApp</a></button>`;
                         products.appendChild(product);
 
                         row ++;

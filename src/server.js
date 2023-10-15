@@ -16,9 +16,11 @@ app.use((req, res, next) => {
 });
 
 const db = new sqlite3.Database(':memory:', (err) => {
+
     if (err) {
         console.error('[!] Error connecting to the SQLite database:', err.message);
     } else {
+
         console.log('[+] Connected to the SQLite database.\n');
         initializeDatabase()
             .then(() => {
@@ -27,10 +29,13 @@ const db = new sqlite3.Database(':memory:', (err) => {
             .catch((error) => {
                 console.error('[!] Error initializing the database:', error);
             });
+
     }
+
 });
 
 function initializeDatabase() {
+
     const sqlScript = `
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,9 +67,11 @@ function initializeDatabase() {
     const sqlCommands = sqlScript.split(';').filter(command => command.trim() !== '');
 
     return executeSqlCommands(0, sqlCommands);
+
 }
 
 function executeSqlCommands(index, commands) {
+
     return new Promise((resolve, reject) => {
         if (index >= commands.length) {
             resolve();
@@ -79,10 +86,12 @@ function executeSqlCommands(index, commands) {
             }
         });
     });
+
 }
 
 
 function startServer() {
+
     app.get('/', (req, res) => {
         res.send("<h1>Server</h1>");
     });
@@ -101,14 +110,48 @@ function startServer() {
     });
 
     app.post('/login', (req, res) => {
-        // Resto do código do login
+    
+        const query = `SELECT * FROM users WHERE username = ? AND login = ? AND password = ?`;
+        const params = [req.body.user, req.body.login, req.body.password];
+        console.log(params)
+        
+    	db.all(query, params, (err, rows) => {
+    	
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erro interno no servidor.');
+            }
+            
+            if (rows.length > 0) {
+                console.log('ok')
+            	res.status(200).send('Solicitação bem sucedida!');
+            } else {
+            	return res.status(401).send('Login ou senha incorretos.');
+            }
+            
+        });
+        
     });
-
-    app.post('/new_account', (req, res) => {
-        // Resto do código para criar uma nova conta
-    });
+    
+	app.post('/new_product', (req, res) => {
+	   
+		const { name, price, image_url) } = req.body;
+	
+		const query = `INSERT INTO users (name, price, image_url) VALUES (?, ?, ?)`;
+		const params = [name, price, image_url];
+		
+		db.run(query, params, function (err) {
+		    
+		    if (err) {
+		        console.error(err);
+		        return res.status(500).send('Erro interno no servidor.');
+		    }
+		    
+		});
+	});
 
     app.listen(port, () => {
         console.log(`[+] Server running on port: ${port}`);
     });
+
 }
